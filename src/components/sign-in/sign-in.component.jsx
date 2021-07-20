@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { signInWithGoogle } from '../../supabase/supabase.helper';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../submit-button/custom-button.component';
 import './sign-in.styles.scss';
@@ -26,6 +27,10 @@ class SignIn extends Component {
         this.setState({ [name]: value });
     }
 
+    handleSocialLogin = () => {
+        signInWithGoogle();
+    }
+
     render() {
         return(
             <div className='sign-in'>
@@ -46,7 +51,14 @@ class SignIn extends Component {
                     value={this.state.password} 
                     onChange={this.handleInput} 
                     required />
-                    <CustomButton type='submit' value='Submit'>Sign In</CustomButton>
+                    <div className='buttons'>
+                        <CustomButton type='submit' value='Submit'>
+                            Sign In
+                        </CustomButton>
+                        <CustomButton isGoogleSignIn onClick={this.handleSocialLogin}>
+                            Sign in with Google
+                        </CustomButton>
+                    </div>
                 </form>
             </div>
         );

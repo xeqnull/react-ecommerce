@@ -6,9 +6,12 @@ import './authentication.styles.scss';
 
 const Authentication = () => (
     <div className='authentication'>
-        <SignIn />
-        <SignUp />
-
+        <div className='sign-in'>
+            <SignIn />
+        </div>
+        <div className='sign-up'>
+            <SignUp />
+        </div>
     </div>
 );
 

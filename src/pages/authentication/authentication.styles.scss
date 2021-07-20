@@ -1,4 +1,12 @@
 .authentication {
     display: flex;
     flex-direction: column;
+
+    .sign-in {
+        width: 50%;
+    }
+
+    .sign-up {
+        width: 50%;
+    }
 }
