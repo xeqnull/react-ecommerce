@@ -6,50 +6,61 @@ import HomePage from './pages/homepage/home.component';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import Authentication from './pages/authentication/authentication.component';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 class App extends Component {
-  constructor() {
-    super();
+	constructor() {
+		super();
 
-    this.state = {
-      currentUser: null
-    }
-  }
+		this.state = {
+			currentUser: null,
+		};
+	}
 
-  unsubscribeFromAuth = null;
+	unsubscribeFromAuth = null;
 
-  componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user });
-      console.log(user);
-    });
-  }
+	componentDidMount() {
+		this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+			if (userAuth) {
+				console.log(userAuth);
+				const userRef = await createUserProfileDocument(userAuth);
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-  
-  render() {
-    return (
-      <ChakraProvider>
-        <div>
-        <Header currentUser={this.state.currentUser} />
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route exact path='/shop' component={ShopPage} />
-          {/* <Route path='/shop/hats' component={HatsPage} />
-          <Route path='/shop/jackets' component={JacketsPage} />
-          <Route path='/shop/sneakers' component={SneakersPage} />
-          <Route path='/shop/womens' component={WomensPage} />
-          <Route path='/shop/mens' component={MensPage} /> */}
-          <Route path='/authentication' component={Authentication} />
-        </Switch>
-      </div>
-      </ChakraProvider>
-    );
-  }
-  
+				userRef.onSnapshot((snapshot) => {
+					this.setState({
+						currentUser: {
+							id: snapshot.id,
+							...snapshot.data(),
+						},
+					});
+				});
+			}
+			this.setState({ currentUser: userAuth });
+		});
+	}
+
+	componentWillUnmount() {
+		this.unsubscribeFromAuth();
+	}
+
+	render() {
+		return (
+			<ChakraProvider>
+				<div>
+					<Header currentUser={this.state.currentUser} />
+					<Switch>
+						<Route exact path='/' component={HomePage} />
+						<Route exact path='/shop' component={ShopPage} />
+						{/* <Route path='/shop/hats' component={HatsPage} />
+						<Route path='/shop/jackets' component={JacketsPage} />
+						<Route path='/shop/sneakers' component={SneakersPage} />
+						<Route path='/shop/womens' component={WomensPage} />
+						<Route path='/shop/mens' component={MensPage} /> */}
+						<Route path='/authentication' component={Authentication} />
+					</Switch>
+				</div>
+			</ChakraProvider>
+		);
+	}
 }
 
 export default App;

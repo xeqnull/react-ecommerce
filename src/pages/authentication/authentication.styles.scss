@@ -1,12 +1,6 @@
 .authentication {
-    display: flex;
-    flex-direction: column;
-
-    .sign-in {
-        width: 50%;
-    }
-
-    .sign-up {
-        width: 50%;
-    }
+	width: 850px;
+	display: flex;
+	justify-content: space-between;
+	margin: 30px auto;
 }
