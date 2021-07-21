@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../submit-button/custom-button.component';
-// import { supabase } from '../../supabase/supabase.config';
 import './sign-up.styles.scss';
 
 class SignUp extends Component {
@@ -18,23 +17,12 @@ class SignUp extends Component {
 
     handleSubmit = evt => {
         evt.preventDefault();
-
         this.setState({ displayName: '', email: '', password: '' });
-
-        // const { user, session, error } = await supabase.auth.signUp({
-        //     email: this.state.email,
-        //     password: this.state.password
-        // });
-
-
     }
 
     handleInput = evt => {
         const { value, name } = evt.target;
-
         this.setState({ [name]: value });
-
-        
     }
 
     render() {

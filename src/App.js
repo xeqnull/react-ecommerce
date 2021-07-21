@@ -1,12 +1,12 @@
 import './App.css';
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-
+import { ChakraProvider } from '@chakra-ui/react';
 import HomePage from './pages/homepage/home.component';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import Authentication from './pages/authentication/authentication.component';
-import { supabase } from './supabase/supabase.helper';
+import { auth } from './firebase/firebase.utils';
 
 class App extends Component {
   constructor() {
@@ -20,9 +20,9 @@ class App extends Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = supabase.auth.onAuthStateChange((event, session) => {
-      this.setState({ currentUser: session.user });
-
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      this.setState({ currentUser: user });
+      console.log(user);
     });
   }
 
@@ -32,7 +32,8 @@ class App extends Component {
   
   render() {
     return (
-      <div>
+      <ChakraProvider>
+        <div>
         <Header currentUser={this.state.currentUser} />
         <Switch>
           <Route exact path='/' component={HomePage} />
@@ -45,6 +46,7 @@ class App extends Component {
           <Route path='/authentication' component={Authentication} />
         </Switch>
       </div>
+      </ChakraProvider>
     );
   }
   

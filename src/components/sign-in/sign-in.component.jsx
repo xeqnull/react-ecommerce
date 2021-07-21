@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { signInWithGoogle } from '../../supabase/supabase.helper';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../submit-button/custom-button.component';
+import { signInWithGoogle } from '../../firebase/firebase.utils';
 import './sign-in.styles.scss';
 
 class SignIn extends Component {
-
     constructor(props) {
         super(props);
 
@@ -17,17 +16,15 @@ class SignIn extends Component {
 
     handleSubmit = evt => {
         evt.preventDefault();
-
         this.setState({ email: '', password: '' });
     }
 
     handleInput = evt => {
         const { value, name } = evt.target;
-
         this.setState({ [name]: value });
     }
 
-    handleSocialLogin = () => {
+    handleSocialLogin = async () => {
         signInWithGoogle();
     }
 
