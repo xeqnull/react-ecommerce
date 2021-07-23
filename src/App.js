@@ -1,6 +1,6 @@
 import './App.css';
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { connect } from 'react-redux';
 
@@ -48,7 +48,17 @@ class App extends Component {
 						<Route path='/shop/sneakers' component={SneakersPage} />
 						<Route path='/shop/womens' component={WomensPage} />
 						<Route path='/shop/mens' component={MensPage} /> */}
-						<Route path='/authentication' component={Authentication} />
+						<Route
+							exact
+							path='/authentication'
+							render={() =>
+								this.props.currentUser ? (
+									<Redirect to='/' />
+								) : (
+									<Authentication />
+								)
+							}
+						/>
 					</Switch>
 				</div>
 			</ChakraProvider>
@@ -56,8 +66,12 @@ class App extends Component {
 	}
 }
 
+const mapStateToProps = ({ user }) => ({
+	currentUser: user.currentUser,
+});
+
 const mapDispatchToProps = (dispatch) => ({
 	setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
