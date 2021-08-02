@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import HomePage from './pages/homepage/home.component';
 import ShopPage from './pages/shop/shop.component';
@@ -10,6 +11,7 @@ import Header from './components/header/header.component';
 import Authentication from './pages/authentication/authentication.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
+import { selectCurrentUser } from './redux/user/user.selector';
 
 class App extends Component {
 	unsubscribeFromAuth = null;
@@ -66,8 +68,8 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = ({ user }) => ({
-	currentUser: user.currentUser,
+const mapStateToProps = createStructuredSelector({
+	currentUser: selectCurrentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
